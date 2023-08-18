@@ -65,3 +65,22 @@ for text, href in fox_headlines_dict.items():
     print(f"Text: {text}\nHref: {href}\n")
 
 driver.quit()
+
+headless_options = Options()
+headless_options.add_argument("--headless")
+headless_driver = webdriver.Chrome(options=headless_options)
+
+bbc_articles = {}
+
+for headline, link in bbc_headlines_dict.items():
+    headless_driver.get(link)
+
+    time.sleep(5)
+
+    paragraphs = headless_driver.find_elements(By.TAG_NAME, "p")
+    paragraphs_text = [paragraph.text.strip() for paragraph in paragraphs if paragraph.text.strip()]
+
+    bbc_articles[headline] = paragraphs_text
+
+for headline, text in bbc_articles.items():
+    print(f"Headline: {headline}\nText: {text}")
