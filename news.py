@@ -101,3 +101,21 @@ for headline, link in cnn_headlines_dict.items():
 
 for headline, text in cnn_articles.items():
     print(f"Headline: {headline}\nText: {text}\n")
+
+# CNN Articles
+fox_articles = {}
+
+for headline, link in fox_headlines_dict.items():
+    headless_driver.get(link)
+
+    wait = WebDriverWait(headless_driver, 5)
+
+    paragraphs = wait.until(EC.presence_of_all_elements_located((By.TAG_NAME, "p")))
+    paragraphs_text = [paragraph.text.strip() for paragraph in paragraphs if not paragraph.find_elements(By.TAG_NAME, "a")]
+
+    fox_articles[headline] = paragraphs_text
+
+for headline, text in fox_articles.items():
+    print(f"Headline: {headline}\nText: {text}\n")
+
+headless_driver.quit()
