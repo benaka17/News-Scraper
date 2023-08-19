@@ -70,6 +70,7 @@ headless_options = Options()
 headless_options.add_argument("--headless")
 headless_driver = webdriver.Chrome(options=headless_options)
 
+# BBC Articles
 bbc_articles = {}
 
 for headline, link in bbc_headlines_dict.items():
@@ -83,4 +84,20 @@ for headline, link in bbc_headlines_dict.items():
     bbc_articles[headline] = paragraphs_text
 
 for headline, text in bbc_articles.items():
-    print(f"Headline: {headline}\nText: {text}")
+    print(f"Headline: {headline}\nText: {text}\n")
+
+# CNN Articles
+cnn_articles = {}
+
+for headline, link in cnn_headlines_dict.items():
+    headless_driver.get(link)
+
+    wait = WebDriverWait(headless_driver, 5)
+
+    paragraphs = wait.until(EC.presence_of_all_elements_located((By.CLASS_NAME, "paragraph.inline-placeholder")))
+    paragraphs_text = [paragraph.text.strip() for paragraph in paragraphs if paragraph.text.strip()]
+
+    cnn_articles[headline] = paragraphs_text
+
+for headline, text in cnn_articles.items():
+    print(f"Headline: {headline}\nText: {text}\n")
